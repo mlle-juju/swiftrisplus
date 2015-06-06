@@ -81,9 +81,8 @@ enum Orientation: Int, Printable {
         
         //#3 Here, we write a complete computed property which is designed to return the bottom blocks of the shape at its current orientation. This will be useful later when our blocks get physical and start contacting walls and each other.
         var bottomBlocks:Array<Block> {
-            if let bottomblocks = bottomBlocksForOrientations[orientation] {
-                return bottomBlocks
-                
+            if let bottomblocksVariable = bottomBlocksForOrientations[orientation] {
+                return bottomblocksVariable
             }
             return []
             

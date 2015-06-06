@@ -22,20 +22,21 @@ class GameViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
     
-    //Configure the view.
-    let skView = view as! SKView
-    skView.multipleTouchEnabled = false
-    
-    /*The as! operator is a forced downcast. The view object is of type SKView, but prior to downcasting, our code treated it like a basic UIView. Without downcasting, we are unable to access SKView methods and properties, such as presentScene(SKScene).*/
+        //Configure the view.
+        let skView = view as! SKView
+        skView.multipleTouchEnabled = false
         
+        /*The as! operator is a forced downcast. The view object is of type SKView, but prior to downcasting, our code treated it like a basic UIView. Without downcasting, we are unable to access SKView methods and properties, such as presentScene(SKScene).*/
+            
+        
+        //Create and configure the scene
+        scene = GameScene(size: skView.bounds.size)
+        scene.scaleMode = .AspectFill
+        
+        //Present the scene.
+        skView.presentScene(scene)
+        
+     
     
-    //Create and configure the scene
-    scene = GameScene(size: skView.bounds.size)
-    scene.scaleMode = .AspectFill
-    
-    //Present the scene.
-    skView.presentScene(scene)
-    
- 
-    
+    }
 }

@@ -37,7 +37,7 @@ class GameScene: SKScene {
     tick?()
     
     }
-        
+    }
         //#4 We provide accessor methods to let external classes stop and start the ticking process, something we'll make use of later in order to keep pieces from falling at key moments
         func startTicking() {
             lastTick = NSDate()
