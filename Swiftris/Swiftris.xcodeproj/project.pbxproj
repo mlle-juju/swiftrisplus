@@ -25,6 +25,7 @@
 		932854371B1792BD008121D3 /* whitebg.png in Resources */ = {isa = PBXBuildFile; fileRef = 932854311B1792BD008121D3 /* whitebg.png */; };
 		932854381B1792BD008121D3 /* whitebg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 932854321B1792BD008121D3 /* whitebg@2x.png */; };
 		9328543A1B17C5FF008121D3 /* Array2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 932854391B17C5FF008121D3 /* Array2D.swift */; };
+		93E4A6D41B2A4C18006D0B5C /* Swiftris.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E4A6D31B2A4C18006D0B5C /* Swiftris.swift */; };
 		93F240D71B1E882300F0B97D /* SquareShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F240D61B1E882300F0B97D /* SquareShape.swift */; };
 		93F240D91B1E88CE00F0B97D /* TShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F240D81B1E88CE00F0B97D /* TShape.swift */; };
 		93F240DB1B1E88F100F0B97D /* LineShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F240DA1B1E88F100F0B97D /* LineShape.swift */; };
@@ -67,6 +68,7 @@
 		932854311B1792BD008121D3 /* whitebg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = whitebg.png; sourceTree = "<group>"; };
 		932854321B1792BD008121D3 /* whitebg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "whitebg@2x.png"; sourceTree = "<group>"; };
 		932854391B17C5FF008121D3 /* Array2D.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Array2D.swift; sourceTree = "<group>"; };
+		93E4A6D31B2A4C18006D0B5C /* Swiftris.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Swiftris.swift; sourceTree = "<group>"; };
 		93F240D61B1E882300F0B97D /* SquareShape.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SquareShape.swift; sourceTree = "<group>"; };
 		93F240D81B1E88CE00F0B97D /* TShape.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TShape.swift; sourceTree = "<group>"; };
 		93F240DA1B1E88F100F0B97D /* LineShape.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LineShape.swift; sourceTree = "<group>"; };
@@ -127,6 +129,7 @@
 				932854391B17C5FF008121D3 /* Array2D.swift */,
 				9302C5261B17CB15007D45E8 /* Block.swift */,
 				9302C52A1B17CDFF007D45E8 /* Shape.swift */,
+				93E4A6D31B2A4C18006D0B5C /* Swiftris.swift */,
 				93F240D61B1E882300F0B97D /* SquareShape.swift */,
 				93F240D81B1E88CE00F0B97D /* TShape.swift */,
 				93F240DA1B1E88F100F0B97D /* LineShape.swift */,
@@ -281,6 +284,7 @@
 				93F240D71B1E882300F0B97D /* SquareShape.swift in Sources */,
 				93067EE11B0ABA39008A56AC /* GameScene.swift in Sources */,
 				93F240DF1B1E892900F0B97D /* JShape.swift in Sources */,
+				93E4A6D41B2A4C18006D0B5C /* Swiftris.swift in Sources */,
 				9302C52B1B17CDFF007D45E8 /* Shape.swift in Sources */,
 				9328543A1B17C5FF008121D3 /* Array2D.swift in Sources */,
 				93F240DB1B1E88F100F0B97D /* LineShape.swift in Sources */,
