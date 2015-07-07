@@ -8,7 +8,7 @@
 
 
 // #1 Define a class named Array2D. Generic arrays in Swift are actually of type struct, not class but we need a class in this case
-class Array2D<t> {
+class Array2D<T> {
     let columns: Int
     let rows: Int
     
