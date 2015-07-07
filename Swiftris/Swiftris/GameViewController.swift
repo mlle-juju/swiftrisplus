@@ -11,11 +11,12 @@ import SpriteKit
 
 //GameBiewController handles user input and communicated between GameScene and a game logic class
 
-class GameViewController: UIViewController, SwiftrisDelegate {
+class GameViewController: UIViewController, SwiftrisDelegate, UIGestureRecognizerDelegate {
 
 
     var scene: GameScene! // :D
     var swiftris:Swiftris!
+    var panPointReference:CGPoint?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -70,6 +71,60 @@ class GameViewController: UIViewController, SwiftrisDelegate {
     }
     
     
+    //This function below will be called if and when a tap is recognized
+    @IBAction func didTap(sender: UITapGestureRecognizer) {
+        swiftris.rotateShape()
+    }
+    
+    @IBAction func didPan(sender: UIPanGestureRecognizer) {
+    
+        let currentPoint = sender.translationInView(self.view)
+        if let originalPoint = panPointReference {
+            
+            if abs(currentPoint.x - originalPoint.x) > (BlockSize * 0.9) {
+                
+                if sender.velocityInView(self.view).x > CGFloat(0) {
+                    swiftris.moveShapeRight()
+                    panPointReference = currentPoint
+                } else {
+                    swiftris.moveShapeLeft()
+                    panPointReference = currentPoint
+                }
+            }
+        } else if sender.state == .Began {
+            panPointReference = currentPoint
+        }
+    
+    }
+    
+    
+    @IBAction func didSwipe(sender: UISwipeGestureRecognizer) {
+    swiftris.dropShape()
+    
+    }
+    
+    // GameViewController will implement an optional delegate method found in UIGestureRecognizerDelegate which will allow each gesture recognizer to work in tandem with the others. However, at times a gesture recognizer may collide with another.
+    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
+    }
+    
+    // Occasionally when swiping down, a pan gesture may occur simultaneously with a swipe gesture. In order for these recognizers to relinquish priority, we will implement another optional delegate method at #2. The code performs several optional cast conditionals. These if conditionals attempt to cast the generic UIGestureRecognizer parameters as the specific types of recognizers we expect to be notified of. If the cast succeeds, the code block is executed.
+    
+
+    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailByGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        if let swipeRec = gestureRecognizer as? UISwipeGestureRecognizer {
+            if let panRec = otherGestureRecognizer as? UIPanGestureRecognizer {
+                return true
+            }
+        } else if let panRec = gestureRecognizer as? UIPanGestureRecognizer {
+            if let tapRec = otherGestureRecognizer as? UITapGestureRecognizer {
+                return true
+            }
+        }
+        return false
+    }
+    
+    
     func nextShape() {
         let newShapes = swiftris.newShape()
         if let fallingShape = newShapes.fallingShape {
@@ -103,6 +158,11 @@ class GameViewController: UIViewController, SwiftrisDelegate {
     }
     
     func gameShapeDidDrop(swiftris: Swiftris) {
+      //#3 we stop the ticks, redraw the shape at its new location and then let it drop. This will in turn call back to GameViewController and report that the shape has landed.
+        scene.stopTicking()
+        scene.redrawShape(swiftris.fallingShape!) {
+            swiftris.letShapeFall()
+        }
         
     }
     
