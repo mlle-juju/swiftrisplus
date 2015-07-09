@@ -18,6 +18,10 @@ class GameViewController: UIViewController, SwiftrisDelegate, UIGestureRecognize
     var swiftris:Swiftris!
     var panPointReference:CGPoint?
 
+    
+    @IBOutlet weak var scoreLabel: UILabel!
+    @IBOutlet weak var levelLabel: UILabel!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
     
@@ -138,6 +142,12 @@ class GameViewController: UIViewController, SwiftrisDelegate, UIGestureRecognize
     }
     
     func gameDidBegin(swiftris: Swiftris) {
+        //when the game begins, we reset the score and level labels as well as the speed at which the ticks occur, beginning with TickLengthLevelOne
+        
+            levelLabel.text = "\(swiftris.level)"
+            scoreLabel.text = "\(swiftris.score)"
+            scene.tickLengthMillis = TickLengthLevelOne
+        
         // The following is false when restarting a new game
         if swiftris.nextShape != nil && swiftris.nextShape!.blocks[0].sprite == nil {
             scene.addPreviewShapeToScene(swiftris.nextShape!) {
@@ -151,9 +161,29 @@ class GameViewController: UIViewController, SwiftrisDelegate, UIGestureRecognize
     func gameDidEnd(swiftris: Swiftris) {
         view.userInteractionEnabled = false
         scene.stopTicking()
+        
+        //after the game ends, we'll play the GAME OVER sound. then we destrooooy the remaining blocks on screen before starting a brand new game w/o delay.
+        scene.playSound("gameover.mp3")
+        scene.animateCollapsingLines(swiftris.removeAllBlocks(), fallenBlocks: Array<Array<Block>>()) {
+            swiftris.beginGame()
+        }
+        
+        
     }
     
     func gameDidLevelUp(swiftris: Swiftris) {
+        //whoop whoop! you're onto the next level
+        //each time the player levels up, we decrease the tick interval. at first, each level decreases by 100 milliseconds, but as it progresses it will go even faster, ultimately topping off at 50 milliseconds between ticks.
+        //we play a congratulatory level-up sound as a reward (lol...)
+        levelLabel.text = "\(swiftris.level)"
+        if scene.tickLengthMillis >= 100 {
+            scene.tickLengthMillis -= 100
+            
+        } else if scene.tickLengthMillis > 50 {
+            scene.tickLengthMillis -= 50
+        }
+        scene.playSound("levelup.mp3")
+        
         
     }
     
@@ -163,17 +193,37 @@ class GameViewController: UIViewController, SwiftrisDelegate, UIGestureRecognize
         scene.redrawShape(swiftris.fallingShape!) {
             swiftris.letShapeFall()
         }
+        scene.playSound("drop.mp3")
         
     }
     
     func gameShapeDidLand(swiftris: Swiftris) {
         scene.stopTicking()
-        nextShape()
+        //nextShape()
+        self.view.userInteractionEnabled = false
+        
+        
+        //invoke 'removeCompletedLines' to recover the two arrays from Swiftris. if any lines have been removed at all, we update the score label to represent the newest score and then animate the blocks with our explosive new animation function
+        let removedLines = swiftris.removeCompletedLines()
+        if removedLines.linesRemoved.count > 0 {
+            self.scoreLabel.text = "\(swiftris.score)"
+            scene.animateCollapsingLines(removedLines.linesRemoved, fallenBlocks:removedLines.fallenBlocks) {
+                
+         //we perform a recursive call here. a recursive function invokes itself. in the Swiftris game's case, after the blocks have fallen to their new location, they may have formed brand new lines. SO after the first set of lines are removed, we invoke gameShapeDidLand(Swiftris) again in order to detect any such new lines. if none are found, the next shape is brought in
+                self.gameShapeDidLand(swiftris)
+        }
+            scene.playSound("bomb.mp3")
+        } else {
+            nextShape()
+        }
+        
     }
     
     // #3
     func gameShapeDidMove(swiftris: Swiftris) {
         scene.redrawShape(swiftris.fallingShape!) {}
     }
+  
     
-} //POSSIBLE DELETE THIS BRACKET.
+    
+}

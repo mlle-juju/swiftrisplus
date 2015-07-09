@@ -145,7 +145,92 @@ class GameScene: SKScene {
         shapeLayer.addChild(gameBoard)
         gameLayer.addChild(shapeLayer)
         
+        
+        //Set up a looping sound playback action of our theme song.
+    runAction(SKAction.repeatActionForever(SKAction.playSoundFileNamed("theme.mp3", waitForCompletion: true)))
     }
-
+        //Add a method which GameViewController may use to play any sound file on demand.
+    func playSound(sound:String) {
+        runAction(SKAction.playSoundFileNamed(sound, waitForCompletion: false))
+    }
+    
+    
+    //Take in the tuple data which 'Swiftris' returns each time a line is removed. This will ensure that GameViewController need only pass those elements to GameScene in order for them to animate properly.
+    
+    func animateCollapsingLines(linesToRemove: Array<Array<Block>>, fallenBlocks: Array<Array<Block>>, completion:() -> ()) {
+        var longestDuration: NSTimeInterval = 0
+        
+        
+    //We cascade the blocks from left to right. We begin by iterating column by column, block by block. We also establish a longestDuration variable which will determine precisely how long we should wait before calling the completion closure.
+        
+        for (columnIdx, column) in enumerate(fallenBlocks) {
+            for (blockIdx, block) in enumerate(column) {
+                let newPosition = pointForColumn(block.column, row: block.row)
+                let sprite = block.sprite!
+                
+                
+    //In order to keep the blocks from looking robotic, they will fall shortly after one another rather than all at once. The below code  will produce this pleasing effect for eyes to enjoy. Based on the block and column indices, there will be a directly proportional delay.
+                
+                let delay = (NSTimeInterval(columnIdx) * 0.05) + (NSTimeInterval(blockIdx) * 0.5)
+                let duration = NSTimeInterval(((sprite.position.y - newPosition.y) / BlockSize) * 0.1)
+                let moveAction = SKAction.moveTo(newPosition, duration: duration)
+                moveAction.timingMode = .EaseOut
+                sprite.runAction(
+                SKAction.sequence([
+                    SKAction.waitForDuration(delay),
+                    moveAction]))
+                longestDuration = max(longestDuration, duration + delay)
+            }
+        }
+       
+   //When removing lines, we make their blocks shoot off the screen like explosive debris. In order to accomplish this we employ UIBezierPath. Our arch requires a radius and we've chosen to generate one randomly in order to introduce a natural variance among the explosive paths. Furthermore, we've randomized whether the block flies left or right...pretty cool stuff :)
+        
+        for (rowIdx, row) in enumerate(linesToRemove) {
+            for (blockIdx, block) in enumerate(row) {
+                
+                let randomRadius = CGFloat(UInt(arc4random_uniform(400) + 100))
+                let goLeft = arc4random_uniform(100) % 2 == 0
+                
+                var point = pointForColumn(block.column, row: block.row)
+                point = CGPointMake(point.x + (goLeft ? -randomRadius : randomRadius), point.y)
+                
+                let randomDuration = NSTimeInterval(arc4random_uniform(2)) + 0.5
+                
+    //We choose beginning and starting angles for the blocks to fly about, either left or right
+                var startAngle = CGFloat(M_PI)
+                var endAngle = startAngle * 2
+                if goLeft {
+                    endAngle = startAngle
+                    startAngle = 0
+                    
+                }
+                
+                let archPath = UIBezierPath(arcCenter: point, radius: randomRadius, startAngle: startAngle, endAngle: endAngle, clockwise: goLeft)
+                
+                let archAction = SKAction.followPath(archPath.CGPath, asOffset: false, orientToPath: true, duration: randomDuration)
+                archAction.timingMode = .EaseIn
+                let sprite = block.sprite!
+                
+     //We place the block sprite above the others such that they animate above the other blocks and begin the sequence of actions which concludes with the sprite being removed from the scene
+                
+                sprite.zPosition = 100
+                sprite.runAction(
+                    SKAction.sequence(
+                    [SKAction.group([archAction, SKAction.fadeOutWithDuration(NSTimeInterval(randomDuration))]),
+                SKAction.removeFromParent()]))
+            
+            
+            }
+            
+        }
+        
+        //we run the 'completion' action after a duration matching the time it will take to drop the last block to its new resting place.
+        
+        runAction(SKAction.waitForDuration(longestDuration), completion:completion)
+        
+    }
+    
+    
+    
 }
 
