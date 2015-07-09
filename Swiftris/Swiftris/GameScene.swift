@@ -147,7 +147,7 @@ class GameScene: SKScene {
         
         
         //Set up a looping sound playback action of our theme song.
-    runAction(SKAction.repeatActionForever(SKAction.playSoundFileNamed("theme.mp3", waitForCompletion: true)))
+        //  runAction(SKAction.repeatActionForever(SKAction.playSoundFileNamed("theme.mp3", waitForCompletion: true)))
     }
         //Add a method which GameViewController may use to play any sound file on demand.
     func playSound(sound:String) {
