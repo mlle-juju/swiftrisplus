@@ -163,7 +163,7 @@ class GameViewController: UIViewController, SwiftrisDelegate, UIGestureRecognize
         scene.stopTicking()
         
         //after the game ends, we'll play the GAME OVER sound. then we destrooooy the remaining blocks on screen before starting a brand new game w/o delay.
-        scene.playSound("gameover.mp3")
+        //       scene.playSound("gameover.mp3")
         scene.animateCollapsingLines(swiftris.removeAllBlocks(), fallenBlocks: Array<Array<Block>>()) {
             swiftris.beginGame()
         }
@@ -182,7 +182,7 @@ class GameViewController: UIViewController, SwiftrisDelegate, UIGestureRecognize
         } else if scene.tickLengthMillis > 50 {
             scene.tickLengthMillis -= 50
         }
-        scene.playSound("levelup.mp3")
+        //       scene.playSound("levelup.mp3")
         
         
     }
@@ -193,7 +193,7 @@ class GameViewController: UIViewController, SwiftrisDelegate, UIGestureRecognize
         scene.redrawShape(swiftris.fallingShape!) {
             swiftris.letShapeFall()
         }
-        scene.playSound("drop.mp3")
+        //        scene.playSound("drop.mp3")
         
     }
     
@@ -212,7 +212,7 @@ class GameViewController: UIViewController, SwiftrisDelegate, UIGestureRecognize
          //we perform a recursive call here. a recursive function invokes itself. in the Swiftris game's case, after the blocks have fallen to their new location, they may have formed brand new lines. SO after the first set of lines are removed, we invoke gameShapeDidLand(Swiftris) again in order to detect any such new lines. if none are found, the next shape is brought in
                 self.gameShapeDidLand(swiftris)
         }
-            scene.playSound("bomb.mp3")
+            //            scene.playSound("bomb.mp3")
         } else {
             nextShape()
         }
