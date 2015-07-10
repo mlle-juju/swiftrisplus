@@ -100,6 +100,8 @@ class Swiftris {
                 if block.column < 0 || block.column >= NumColumns
                     || block.row < 0 || block.row >= NumRows {
                         return true
+                } else if blockArray[block.column, block.row] != nil {
+                    return true
                 }
             }
         }
@@ -108,8 +110,6 @@ class Swiftris {
         
     }
     
-//MAY NEED A CLOSE BRACKET } HERE
-
     func settleShape() {
         if let shape = fallingShape {
             for block in shape.blocks {

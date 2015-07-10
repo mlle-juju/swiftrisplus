@@ -55,7 +55,7 @@ class GameScene: SKScene {
         func stopTicking() {
             lastTick = nil
         }
-    //pointForColumn(Int, Int) is GameScene's most important function. This function returns the preceise coordinate on the screen for where a block sprite belongs base don its row and column position. Each sprite is anchored at its center, so we find the centercoordinate (in the bath below) before placing it in the shapeLAyer object
+    //pointForColumn(Int, Int) is GameScene's most important function. This function returns the precise coordinate on the screen for where a block sprite belongs base don its row and column position. Each sprite is anchored at its center, so we find the centercoordinate (in the bath below) before placing it in the shapeLAyer object
     func pointForColumn(column: Int, row: Int) -> CGPoint {
         let x: CGFloat = LayerPosition.x + (CGFloat(column) * BlockSize) + (BlockSize / 2)
         let y: CGFloat = LayerPosition.y - ((CGFloat(row) * BlockSize) + (BlockSize / 2))
@@ -147,7 +147,7 @@ class GameScene: SKScene {
         
         
         //Set up a looping sound playback action of our theme song.
-        //  runAction(SKAction.repeatActionForever(SKAction.playSoundFileNamed("theme.mp3", waitForCompletion: true)))
+         runAction(SKAction.repeatActionForever(SKAction.playSoundFileNamed("theme.mp3", waitForCompletion: true)))
     }
         //Add a method which GameViewController may use to play any sound file on demand.
     func playSound(sound:String) {
